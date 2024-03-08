@@ -99,7 +99,16 @@ def transformation():
                 boxes.append([x, y, w, h])
                 confidences.append(float(confidence))
                 class_ids.append(class_id)
-    entities = {'boxes':  'detected'}
+    boxes = [list(map(int, box)) for box in boxes]  # Convert each box's coordinates to int, in case they aren't already
+    confidences = [float(conf) for conf in confidences]  # Ensure confidence scores are float
+    class_ids = [int(cid) for cid in class_ids]  # Ensure class IDs are int
+
+    entities = {
+        'boxes': boxes,
+        'confidences': confidences,  # Changed from 'confidence' to 'confidences' to match the list of all confidence values
+        'class_ids': class_ids
+    }
+
     # Transform predictions to JSON
     result = {
         'output': entities
